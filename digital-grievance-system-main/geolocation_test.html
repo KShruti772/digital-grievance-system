@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .test-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Geolocation Test</h1>
+    <div class="test-info">
+        <p>This test page verifies that the geolocation functionality works correctly.</p>
+        <p>Expected behavior:</p>
+        <ul>
+            <li>Map should center on your current location automatically</li>
+            <li>A blue marker should appear at your location</li>
+            <li>Latitude and longitude should be displayed below</li>
+            <li>You can click on the map to select a different location (red marker)</li>
+        </ul>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="test-info">
+        <strong>Current Location:</strong><br>
+        Latitude: <span id="lat">Not detected</span><br>
+        Longitude: <span id="lng">Not detected</span>
+    </div>
+
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+
+    <script src="static/js/map.js"></script>
+</body>
+
+</html>
+</content>
+<parameter name="filePath">d:\chakravyuh2\digital-grievance-system-main\geolocation_test.html

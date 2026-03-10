@@ -1,0 +1,65 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Digital Grievance Redressal System - Home{% endblock %}
+
+{% block content %}
+<div class="row mt-5 mb-5">
+    <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 mb-4">Digital Grievance Redressal System</h1>
+        <p class="lead mb-4">A transparent platform for citizen complaints and grievance resolution</p>
+
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-4 mb-4">
+                <div class="card auth-card">
+                    <div class="card-body">
+                        <i class="bi bi-person display-4 text-primary mb-3"></i>
+                        <h5 class="card-title">Citizen</h5>
+                        <p class="card-text">Register and login as a citizen to submit complaints and track their
+                            status.</p>
+                        {% if session.get('role') != 'citizen' %}
+                        <a href="/citizen_register" class="btn btn-primary me-2">Register</a>
+                        <a href="/citizen_login" class="btn btn-outline-primary">Login</a>
+                        {% else %}
+                        <a href="/citizen/dashboard" class="btn btn-primary">Dashboard</a>
+                        <a href="/logout" class="btn btn-outline-danger">Logout</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card auth-card">
+                    <div class="card-body">
+                        <i class="bi bi-briefcase display-4 text-success mb-3"></i>
+                        <h5 class="card-title">Officer</h5>
+                        <p class="card-text">Register and login as an officer to manage and assign complaints.</p>
+                        {% if session.get('role') != 'officer' %}
+                        <a href="/officer_register" class="btn btn-success me-2">Register</a>
+                        <a href="/officer_login" class="btn btn-outline-success">Login</a>
+                        {% else %}
+                        <a href="/officer/dashboard" class="btn btn-success">Dashboard</a>
+                        <a href="/logout" class="btn btn-outline-danger">Logout</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card auth-card">
+                    <div class="card-body">
+                        <i class="bi bi-shield-lock display-4 text-danger mb-3"></i>
+                        <h5 class="card-title">Administrator</h5>
+                        <p class="card-text">Login as an administrator to oversee the system and manage officers.</p>
+                        {% if session.get('role') != 'admin' %}
+                        <a href="/admin/login" class="btn btn-danger">Admin Login</a>
+                        {% else %}
+                        <a href="/admin/dashboard" class="btn btn-danger">Admin Dashboard</a>
+                        <a href="/admin/logout" class="btn btn-outline-danger">Logout</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Officer Registration - Digital Grievance Redressal System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-7">
+        <div class="card auth-form-card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0"><i class="bi bi-briefcase"></i> Officer Registration</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <!-- Officer ID -->
+                    <div class="mb-3">
+                        <label for="officer_id" class="form-label">Officer ID <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="officer_id" name="officer_id"
+                            placeholder="Enter your officer ID" required>
+                        <small class="text-muted">Your unique officer identification number.</small>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name"
+                            required>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
+                        <select class="form-control" id="department" name="department" required>
+                            <option value="">-- Select Department --</option>
+                            <option value="Municipal Corporation">Municipal Corporation</option>
+                            <option value="Revenue Department">Revenue Department</option>
+                            <option value="Public Works">Public Works Department</option>
+                            <option value="Water Supply">Water Supply</option>
+                            <option value="Electricity">Electricity Board</option>
+                            <option value="Health Department">Health Department</option>
+                            <option value="Education">Education Department</option>
+                            <option value="Transport">Transport Department</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="phone" name="phone"
+                            placeholder="Enter your phone number" pattern="[0-9\s\-\+\(\)]+" required>
+                        <small class="text-muted">Format: +91-XXXXX-XXXXX or 10-digit number</small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Enter password (min 6 characters)" required minlength="6">
+                        <small class="text-muted">Password must be at least 6 characters long.</small>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password <span
+                                class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                            placeholder="Confirm password" required minlength="6">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success w-100 mb-3">
+                        <i class="bi bi-check-circle"></i> Register as Officer
+                    </button>
+                </form>
+
+                <hr>
+
+                <!-- Links -->
+                <p class="text-center">Already registered? <a href="/officer_login">Login here</a></p>
+                <p class="text-center"><a href="/home">Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Confirm password validation
+    document.getElementById('confirm_password').addEventListener('change', function () {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+
+        if (password !== confirmPassword) {
+            this.classList.add('is-invalid');
+            this.setCustomValidity('Passwords do not match');
+        } else {
+            this.classList.remove('is-invalid');
+            this.setCustomValidity('');
+        }
+    });
+</script>
+{% endblock %}

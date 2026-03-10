@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0"><i class="bi bi-file-earmark-text"></i> Complaint Details</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Complaint ID:</strong> #{{ complaint.id }}
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Priority:</strong> <span
+                            class="badge bg-{% if complaint.priority == 'High' %}danger{% elif complaint.priority == 'Medium' %}warning{% else %}success{% endif %}">{{
+                            complaint.priority }}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Status:</strong> <span
+                            class="badge bg-{% if complaint.status == 'Pending' %}warning{% elif complaint.status == 'Assigned' %}info{% elif complaint.status == 'In Progress' %}primary{% else %}success{% endif %}">{{
+                            complaint.status }}</span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Title:</strong> {{ complaint.title }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Category:</strong> {{ complaint.category }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Description:</strong>
+                    <p>{{ complaint.description }}</p>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Location:</strong> {{ complaint.location }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Date Submitted:</strong> {{ complaint.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </div>
+                </div>
+
+                {% if complaint.location_link %}
+                <div class="mb-3">
+                    <strong>Google Maps Location:</strong>
+                    <a href="{{ complaint.location_link }}" target="_blank" class="btn btn-sm btn-info">
+                        <i class="bi bi-geo-alt"></i> View on Google Maps
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if citizen %}
+                <div class="mb-3">
+                    <strong>Submitted by:</strong> {{ citizen.name }} ({{ citizen.email }})
+                </div>
+                {% endif %}
+
+                {% if worker %}
+                <div class="mb-3">
+                    <strong>Assigned to:</strong> {{ worker.name }}
+                </div>
+                {% endif %}
+
+                {% if complaint.image_path %}
+                <div class="mb-3">
+                    <strong>Complaint Image:</strong><br>
+                    <img src="/static/{{ complaint.image_path }}" alt="Complaint Image" class="img-fluid mt-2"
+                        style="max-height: 300px;">
+                </div>
+                {% endif %}
+
+                <a href="/officer/dashboard" class="btn btn-primary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

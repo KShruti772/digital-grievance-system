@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Worker Dashboard</h2>
+
+{% if complaint_assignments %}
+<div class="row">
+    {% for item in complaint_assignments %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-1">{{ item.complaint.title }}</h5>
+                <small class="text-muted">Complaint #{{ item.complaint.id }}</small>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <strong>Location:</strong><br>
+                        {{ item.complaint.location }}
+                    </div>
+                    <div class="col-sm-6">
+                        <strong>Category:</strong><br>
+                        <span class="badge bg-secondary">{{ item.complaint.category }}</span>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <strong>Status:</strong><br>
+                        <span
+                            class="badge bg-{% if item.complaint.status == 'Assigned' %}info{% elif item.complaint.status == 'In Progress' %}primary{% else %}success{% endif %}">{{
+                            item.complaint.status }}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <strong>Assigned Date:</strong><br>
+                        {{ item.assignment.assigned_at.strftime('%Y-%m-%d %H:%M') }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <strong>Description:</strong><br>
+                    <p class="mb-2">{{ item.complaint.description }}</p>
+                </div>
+                {% if item.complaint.image_path %}
+                <div class="mb-3">
+                    <strong>Image:</strong><br>
+                    <img src="{{ url_for('static', filename='uploads/' + item.complaint.image_path) }}"
+                        class="img-fluid rounded" style="max-height: 200px;">
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <form method="post" action="/worker/update/{{ item.complaint.id }}" enctype="multipart/form-data"
+                    class="row g-2">
+                    <div class="col-md-4">
+                        <select name="status" class="form-select form-select-sm" required>
+                            <option value="Assigned" {% if item.complaint.status=='Assigned' %}selected{% endif %}>
+                                Assigned</option>
+                            <option value="In Progress" {% if item.complaint.status=='In Progress' %}selected{% endif
+                                %}>In Progress</option>
+                            <option value="Resolved" {% if item.complaint.status=='Resolved' %}selected{% endif %}>
+                                Resolved</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" name="image" class="form-control form-control-sm" accept="image/*"
+                            title="Upload progress image">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-sm btn-primary w-100">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> No complaints assigned to you yet.
+</div>
+{% endif %}
+{% endblock %}
