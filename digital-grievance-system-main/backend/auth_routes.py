@@ -37,6 +37,7 @@ def citizen_register():
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email').strip().lower()
+        phone = request.form.get('phone', '')
         password = request.form.get('password')
         
         # Validation
@@ -48,44 +49,40 @@ def citizen_register():
             flash('Password must be at least 6 characters', 'danger')
             return redirect(url_for('auth.citizen_register'))
         
-        # Check if email already exists in either table
-        if Citizen.query.filter_by(email=email).first() or User.query.filter_by(email=email).first():
-            flash('You are already registered. Please login.', 'danger')
+        # Check if email already exists
+        existing_citizen = Citizen.query.filter_by(email=email).first()
+        if existing_citizen:
+            flash('Account already exists. Please login.', 'danger')
             return redirect(url_for('auth.citizen_login'))
 
-        # Create new citizen record
-        new_citizen = Citizen(
-            name=name,
-            email=email,
-            password=password
-        )
-
-        # also add to generic User table so complaints can reference user_id
-        new_user = User(
-            name=name,
-            email=email,
-            password=password,
-            role='citizen'
-        )
-
         try:
+            # Create new citizen record and a corresponding User entry for compatibility
+            new_citizen = Citizen(
+                name=name,
+                email=email,
+                phone=phone,
+                password=password
+            )
+            # prepare user record (legacy complaints system relies on User table)
+            new_user = User(
+                name=name,
+                email=email,
+                password=password,
+                phone=phone,
+                role='citizen'
+            )
+
             db.session.add(new_citizen)
             db.session.add(new_user)
             db.session.commit()
             
-            # DEBUG: Verify citizen was saved
-            saved_citizen = Citizen.query.filter_by(email=email).first()
-            print(f"[REGISTRATION DEBUG] Citizen saved successfully!")
-            print(f"  - Email: {saved_citizen.email}")
-            print(f"  - Name: {saved_citizen.name}")
-            print(f"  - ID: {saved_citizen.id}")
-            print(f"  - Password hash: {saved_citizen.password[:20]}...")
-            print(f"[REGISTRATION DEBUG] Total citizens in database: {Citizen.query.count()}")
-            
+            print(f"[✓] Citizen registered and user created: {email}")
             flash('Registration successful! Please login.', 'success')
             return redirect(url_for('auth.citizen_login'))
+            
         except Exception as e:
             db.session.rollback()
+            print(f"[✗] Registration error: {str(e)}")
             flash('An error occurred during registration. Please try again.', 'danger')
             return redirect(url_for('auth.citizen_register'))
     
@@ -101,48 +98,39 @@ def citizen_login():
             flash('Email and password are required', 'danger')
             return redirect(url_for('auth.citizen_login'))
         
-        print(f"\n[LOGIN DEBUG] Attempting login with normalized email: '{email}'")
-        print(f"[LOGIN DEBUG] Total citizens in database: {Citizen.query.count()}")
-        
+        # Look up citizen in Citizen table
         citizen = Citizen.query.filter_by(email=email).first()
         
         if not citizen:
-            print(f"[LOGIN DEBUG] Citizen not found with email: '{email}'")
-            print(f"[LOGIN DEBUG] Available citizen emails: {[c.email for c in Citizen.query.all()]}")
-            flash('Invalid email address', 'danger')
+            flash('Invalid email or password', 'danger')
             return redirect(url_for('auth.citizen_login'))
         
-        print(f"[LOGIN DEBUG] Citizen found: {citizen.name} (ID: {citizen.id})")
-        print(f"[LOGIN DEBUG] Checking password...")
-        
+        # Check password
         if citizen.password != password:
-            print(f"[LOGIN DEBUG] Password verification FAILED")
-            flash('Incorrect password', 'danger')
+            flash('Invalid email or password', 'danger')
             return redirect(url_for('auth.citizen_login'))
         
-        print(f"[LOGIN DEBUG] Password verification SUCCESS")
-        
-        # Ensure there is a corresponding User record (for complaints, assignments, etc.)
+        # For complaint system compatibility, ensure User record exists
         user = User.query.filter_by(email=email).first()
         if not user:
-            user = User(name=citizen.name,
-                        email=email,
-                        password=citizen.password,
-                        role='citizen')
+            user = User(
+                name=citizen.name,
+                email=email,
+                password=password,
+                phone=citizen.phone,
+                role='citizen'
+            )
             db.session.add(user)
             db.session.commit()
-            print(f"[LOGIN DEBUG] Created User record for citizen")
         
-        # Set session variables (we keep citizen_* for compatibility)
-        session['user_id'] = user.id
-        session['role'] = user.role
-        session['name'] = citizen.name
+        # Set session variables
         session['citizen_id'] = citizen.id
         session['citizen_name'] = citizen.name
         session['citizen_email'] = citizen.email
+        session['user_id'] = user.id
+        session['role'] = 'citizen'
         
-        print(f"[LOGIN DEBUG] Session set successfully. Redirecting to dashboard...")
-        
+        print(f"[✓] Citizen login successful: {citizen.name} (ID: {citizen.id})")
         flash(f'Login successful! Welcome {citizen.name}', 'success')
         return redirect(url_for('citizen.dashboard'))
     
@@ -377,6 +365,7 @@ def officer_dashboard():
 
 @auth_routes.route('/logout')
 def logout():
+    name = session.get('citizen_name', session.get('name', 'User'))
     session.clear()
     flash('Logged out successfully', 'info')
     return redirect(url_for('auth.home'))

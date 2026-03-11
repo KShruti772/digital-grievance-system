@@ -110,12 +110,20 @@ if __name__ == '__main__':
         # DEBUG: Print current database state
         print("\n" + "="*60)
         print("[DATABASE DEBUG] Current database state:")
-        print(f"  - Citizens registered: {db.session.query(User).filter_by(role='citizen').count()}")
-        print(f"  - Officers registered: {db.session.query(User).filter_by(role='officer').count()}")
-        print(f"  - Admin users: {db.session.query(User).filter_by(role='admin').count()}")
+        print(f"  - Citizens registered (Citizen table): {Citizen.query.count()}")
+        print(f"  - Citizens registered (User table, role=citizen): {db.session.query(User).filter_by(role='citizen').count()}")
+        print(f"  - Officers registered (User table, role=officer): {db.session.query(User).filter_by(role='officer').count()}")
+        print(f"  - Admin users (User table, role=admin): {db.session.query(User).filter_by(role='admin').count()}")
         print(f"  - Valid officers (pre-approved IDs): {ValidOfficer.query.count()}")
         print(f"  - Workers: {Worker.query.count()}")
         print(f"  - Default officers: {Officer.query.count()}")
+        # print database file location for debugging
+        print(f"  - Database URI: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
+        import os
+        print(f"  - Database file path (cwd): {os.getcwd()}")
+        # debug: list citizen objects
+        citizens = Citizen.query.all()
+        print(f"  - Registered Citizen objects: {citizens}")
         print("="*60 + "\n")
         init_seed_data()
         create_default_workers()

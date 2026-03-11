@@ -88,8 +88,11 @@ def dashboard():
     categories = [cat[0] for cat in categories]
     statuses = ['Pending', 'Assigned', 'In Progress', 'Resolved']
     
+    # Convert complaints to JSON-serializable dictionaries
+    complaints_dict = [c.to_dict() for c in complaints]
+    
     return render_template('officer_dashboard.html', 
-                         complaints=complaints, 
+                         complaints=complaints_dict, 
                          workers=workers,
                          categories=categories,
                          statuses=statuses,

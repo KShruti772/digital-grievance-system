@@ -39,26 +39,23 @@ def test_citizen_authentication():
         
         db.session.commit()
         
-        # SIMULATE REGISTRATION
-        print("\n[STEP 2] Simulate citizen registration...")
-        
-        new_citizen = Citizen(
-            name=test_name,
-            email=test_email,
-            password=test_password
-        )
-        
-        new_user = User(
-            name=test_name,
-            email=test_email,
-            password=test_password,
-            role='citizen'
-        )
-        
-        db.session.add(new_citizen)
-        db.session.add(new_user)
-        db.session.commit()
-        print(f"  ✓ Citizen registered: {test_name} ({test_email})")
+        # SIMULATE REGISTRATION - use actual HTTP endpoint
+        print("\n[STEP 2] Simulate citizen registration via POST request...")
+        with app.test_client() as client:
+            response = client.post(
+                '/citizen_register',
+                data={
+                    'name': test_name,
+                    'email': test_email,
+                    'password': test_password
+                },
+                follow_redirects=True
+            )
+            print(f"  - POST /citizen_register status: {response.status_code}")
+            # optionally display portion of response for debugging
+            print(response.data.decode('utf-8')[:200])
+
+        # after hitting the route, the Citizen and User records should exist
         
         # VERIFY REGISTRATION
         print("\n[STEP 3] Verify citizen was saved to database...")

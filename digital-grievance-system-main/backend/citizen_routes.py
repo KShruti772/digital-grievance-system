@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
 from werkzeug.utils import secure_filename
-from models import db, Complaint, Worker
+from models import db, Citizen, Complaint, Worker
 from priority_classifier import classify_priority
 import os
 from datetime import datetime, timedelta
@@ -15,17 +15,30 @@ def allowed_file(filename):
 
 @citizen.route('/dashboard')
 def dashboard():
-    if 'user_id' not in session or session.get('role') != 'citizen':
+    # Protect dashboard - only authenticated citizens can access
+    if 'citizen_id' not in session:
         flash('Please login as a citizen first', 'warning')
         return redirect(url_for('auth.citizen_login'))
     
-    user_id = session['user_id']
-    complaints = Complaint.query.filter_by(user_id=user_id).all()
-    return render_template('citizen_dashboard.html', complaints=complaints)
+    # Get citizen data
+    citizen_id = session['citizen_id']
+    citizen = Citizen.query.get(citizen_id)
+    
+    if not citizen:
+        flash('Session error. Please login again.', 'warning')
+        session.clear()
+        return redirect(url_for('auth.citizen_login'))
+    
+    # Get complaints for this user (via User table)
+    user_id = session.get('user_id')
+    complaints = Complaint.query.filter_by(user_id=user_id).all() if user_id else []
+    
+    return render_template('citizen_dashboard.html', complaints=complaints, citizen=citizen)
 
 @citizen.route('/submit', methods=['GET', 'POST'])
 def submit_complaint():
-    if 'user_id' not in session or session.get('role') != 'citizen':
+    # Protect route - only authenticated citizens can submit
+    if 'citizen_id' not in session:
         flash('Please login as a citizen first', 'warning')
         return redirect(url_for('auth.citizen_login'))
 

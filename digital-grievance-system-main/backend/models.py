@@ -12,11 +12,13 @@ class ValidOfficer(db.Model):
 
 # Citizen Registration Table
 class Citizen(db.Model):
-    __tablename__ = "citizens"
+    # use singular name to match expectations and earlier documentation
+    __tablename__ = "citizen"
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
+    phone = db.Column(db.String(20), nullable=True)
     password = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -68,6 +70,32 @@ class Complaint(db.Model):
     last_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     deadline = db.Column(db.DateTime)
+
+    def to_dict(self):
+        """Convert complaint to JSON-serializable dictionary"""
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'title': self.title,
+            'description': self.description,
+            'category': self.category,
+            'location': self.location,
+            'location_link': self.location_link,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'image_path': self.image_path,
+            'estimated_resolution_days': self.estimated_resolution_days,
+            'status': self.status,
+            'priority': self.priority,
+            'worker_name': self.worker_name,
+            'worker_contact': self.worker_contact,
+            'estimated_resolution_time': self.estimated_resolution_time,
+            'assigned_officer': self.assigned_officer,
+            'escalation_level': self.escalation_level,
+            'last_updated': self.last_updated.isoformat() if self.last_updated else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'deadline': self.deadline.isoformat() if self.deadline else None
+        }
 
 class Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
