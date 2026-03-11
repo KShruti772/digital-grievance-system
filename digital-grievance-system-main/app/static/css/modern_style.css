@@ -29,6 +29,32 @@ body {
     color: var(--text-primary);
     background-color: #f8f9fa;
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== AUTH CARD WRAPPER ==================== */
+
+.auth-card-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 2rem 1rem;
+}
+
+.auth-card-wrapper .auth-form-card {
+    width: 480px;
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .auth-card-wrapper .auth-form-card {
+        width: 100%;
+        max-width: 95%;
+    }
 }
 
 /* ==================== NAVBAR ==================== */

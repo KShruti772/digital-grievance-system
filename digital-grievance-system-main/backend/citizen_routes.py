@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
 from werkzeug.utils import secure_filename
-from models import db, Complaint
+from models import db, Complaint, Worker
 from priority_classifier import classify_priority
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+import random
 
 citizen = Blueprint('citizen', __name__, url_prefix='/citizen')
 
@@ -58,6 +59,24 @@ def submit_complaint():
         # generate random estimated resolution days
         resolution_days = random.randint(1, 5)
         
+        # Set deadline
+        deadline = datetime.utcnow() + timedelta(days=3)
+        
+        # Map category to department
+        if category == "Garbage":
+            department = "Sanitation"
+        elif category == "Electricity":
+            department = "Electrical"
+        elif category == "Road Damage":
+            department = "Road"
+        else:
+            department = "General"
+        
+        # Assign worker
+        worker = Worker.query.filter_by(department=department).first()
+        worker_name = worker.name if worker else "Not Assigned"
+        worker_contact = worker.contact_number if worker else ""
+        
         complaint = Complaint(
             user_id=session['user_id'],
             title=title,
@@ -67,7 +86,10 @@ def submit_complaint():
             location_link=location_link,
             image_path=image_path,
             priority=priority,
-            estimated_resolution_days=resolution_days
+            estimated_resolution_days=resolution_days,
+            deadline=deadline,
+            worker_name=worker_name,
+            worker_contact=worker_contact
         )
         db.session.add(complaint)
         db.session.commit()

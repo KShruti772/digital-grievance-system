@@ -7,7 +7,7 @@ import json
 officer = Blueprint('officer', __name__, url_prefix='/officer')
 
 def check_escalations():
-    """Check and escalate complaints based on time pending"""
+    """Check and escalate complaints based on time pending and deadline"""
     complaints = Complaint.query.filter_by(status="Pending").all()
     
     for complaint in complaints:
@@ -17,6 +17,10 @@ def check_escalations():
             complaint.escalation_level = 1
         elif days_pending > 5 and complaint.escalation_level == 1:
             complaint.escalation_level = 2
+        
+        # Check deadline
+        if complaint.deadline and datetime.utcnow() > complaint.deadline:
+            complaint.status = "Escalated"
     
     db.session.commit()
 
@@ -116,6 +120,8 @@ def assign(complaint_id):
     complaint.worker_name = worker_name
     complaint.worker_contact = worker_contact
     complaint.estimated_resolution_time = estimated_time
+    complaint.assigned_officer = session['user_id']
+    complaint.last_updated = datetime.utcnow()
     
     db.session.commit()
     flash('Complaint assigned successfully with worker details!', 'success')
@@ -132,11 +138,48 @@ def update_status(complaint_id):
     
     if complaint:
         complaint.status = status
+        complaint.last_updated = datetime.utcnow()
         db.session.commit()
         flash('Status updated successfully!', 'success')
     else:
         flash('Complaint not found', 'danger')
     
+    return redirect(url_for('officer.dashboard'))
+
+@officer.route('/update_complaint/<int:complaint_id>', methods=['POST'])
+def update_complaint(complaint_id):
+    """Comprehensive route to update complaint details"""
+    if 'user_id' not in session or session.get('role') != 'officer':
+        flash('Please login as an officer first', 'warning')
+        return redirect(url_for('auth.officer_login'))
+    
+    complaint = Complaint.query.get(complaint_id)
+    if not complaint:
+        flash('Complaint not found', 'danger')
+        return redirect(url_for('officer.dashboard'))
+    
+    # Update complaint fields from form data
+    if request.form.get('status'):
+        complaint.status = request.form.get('status')
+    
+    if request.form.get('worker_name'):
+        complaint.worker_name = request.form.get('worker_name')
+    
+    if request.form.get('worker_contact'):
+        complaint.worker_contact = request.form.get('worker_contact')
+    
+    if request.form.get('resolution_time'):
+        complaint.estimated_resolution_time = request.form.get('resolution_time')
+    
+    if request.form.get('priority'):
+        complaint.priority = request.form.get('priority')
+    
+    # Always update the last_updated timestamp
+    complaint.last_updated = datetime.utcnow()
+    complaint.assigned_officer = session['user_id']
+    
+    db.session.commit()
+    flash('Complaint updated successfully!', 'success')
     return redirect(url_for('officer.dashboard'))
 
 @officer.route('/complaint/<int:complaint_id>')

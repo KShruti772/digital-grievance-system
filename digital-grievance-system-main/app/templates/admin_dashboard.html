@@ -2,6 +2,7 @@
 
 {% block head %}
 {{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     .stats-card {
         transition: transform 0.2s;
@@ -59,9 +60,33 @@
         <div class="col-md-3">
             <div class="card stats-card border-danger">
                 <div class="card-body text-center">
-                    <i class="bi bi-exclamation-triangle display-4 text-danger"></i>
-                    <h3 class="mt-2">{{ escalated_complaints }}</h3>
-                    <p class="text-muted mb-0">Escalated Complaints</p>
+                    <i class="bi bi-graph-up display-4 text-danger"></i>
+                    <h3 class="mt-2">{{ "%.1f"|format(resolution_rate) }}%</h3>
+                    <p class="text-muted mb-0">Resolution Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Charts -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-pie-chart"></i> Complaints by Category</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-bar-chart"></i> Complaints by Area</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="locationChart"></canvas>
                 </div>
             </div>
         </div>
@@ -87,6 +112,9 @@
                                     <th>Priority</th>
                                     <th>Escalation</th>
                                     <th>Assigned Officer</th>
+                                    <th>Assigned Worker</th>
+                                    <th>Worker Contact</th>
+                                    <th>Deadline</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -126,6 +154,11 @@
                                         {% else %}
                                         <em>Not Assigned</em>
                                         {% endif %}
+                                    </td>
+                                    <td>{{ complaint.worker_name or 'Not Assigned' }}</td>
+                                    <td>{{ complaint.worker_contact or '-' }}</td>
+                                    <td>
+                                        <span id="timer{{ complaint.id }}"></span>
                                     </td>
                                     <td>
                                         <form method="post"
@@ -205,4 +238,68 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Category Pie Chart
+    var categoryData = {
+        labels: {{ category_counts.keys() | list | tojson }},
+    datasets: [{
+        label: 'Complaints by Category',
+        data: {{ category_counts.values() | list | tojson }},
+        backgroundColor: [
+        '#ff6384',
+        '#36a2eb',
+        '#ffcd56',
+        '#4bc0c0',
+        '#9966ff'
+    ]
+        }]
+    };
+
+    new Chart(document.getElementById('categoryChart'), {
+        type: 'pie',
+        data: categoryData
+    });
+
+    // Location Bar Chart
+    var locationData = {
+        labels: {{ location_counts.keys() | list | tojson }},
+    datasets: [{
+        label: 'Complaints by Area',
+        data: {{ location_counts.values() | list | tojson }},
+        backgroundColor: '#36a2eb'
+        }]
+    };
+
+    new Chart(document.getElementById('locationChart'), {
+        type: 'bar',
+        data: locationData
+    });
+</script>
+
+<script>
+    // Countdown timer for deadlines
+    {% for complaint in complaints %}
+    {% if complaint.deadline %}
+    startCountdown('{{ complaint.deadline.isoformat() }}', 'timer{{ complaint.id }}');
+    {% endif %}
+    {% endfor %}
+
+    function startCountdown(deadline, elementId) {
+        var end = new Date(deadline).getTime();
+
+        setInterval(function () {
+            var now = new Date().getTime();
+            var distance = end - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+            if (distance < 0) {
+                document.getElementById(elementId).innerHTML = "⚠ Escalated";
+            } else {
+                document.getElementById(elementId).innerHTML =
+                    "⏳ " + days + " days left";
+            }
+        }, 1000);
+    }
+</script>
 {% endblock %}

@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from models import db, User, Complaint
 from functools import wraps
+from werkzeug.security import check_password_hash
+from datetime import datetime
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -21,7 +23,7 @@ def admin_login():
 
         admin = User.query.filter_by(email=email, role='admin').first()
 
-        if admin and admin.password == password:  # In production, use proper password hashing
+        if admin and check_password_hash(admin.password, password):
             session['user_id'] = admin.id
             session['role'] = 'admin'
             flash('Admin login successful!', 'success')
@@ -39,6 +41,26 @@ def dashboard():
     pending_complaints = Complaint.query.filter_by(status='Pending').count()
     resolved_complaints = Complaint.query.filter_by(status='Resolved').count()
     escalated_complaints = Complaint.query.filter(Complaint.escalation_level > 0).count()
+
+    # Analytics data
+    complaints = Complaint.query.all()
+    category_counts = {}
+    location_counts = {}
+
+    for c in complaints:
+        category_counts[c.category] = category_counts.get(c.category, 0) + 1
+        location_counts[c.location] = location_counts.get(c.location, 0) + 1
+
+    resolution_rate = 0
+    if total_complaints > 0:
+        resolution_rate = (resolved_complaints / total_complaints) * 100
+
+    # Check for expired deadlines and escalate
+    all_complaints = Complaint.query.all()
+    for c in all_complaints:
+        if c.deadline and datetime.utcnow() > c.deadline and c.status != "Resolved":
+            c.status = "Escalated"
+    db.session.commit()
 
     # Get all complaints with officer assignments
     complaints = Complaint.query.order_by(Complaint.escalation_level.desc(), Complaint.created_at.desc()).all()
@@ -58,7 +80,13 @@ def dashboard():
                          escalated_complaints=escalated_complaints,
                          complaints=complaints,
                          officers=officers,
-                         officer_assignments=officer_assignments)
+                         officer_assignments=officer_assignments,
+                         total=total_complaints,
+                         resolved=resolved_complaints,
+                         pending=pending_complaints,
+                         category_counts=category_counts,
+                         location_counts=location_counts,
+                         resolution_rate=resolution_rate)
 
 @admin.route('/assign_officer/<int:complaint_id>', methods=['POST'])
 @admin_login_required

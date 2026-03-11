@@ -3,6 +3,8 @@
 body {
     background-color: #f8f9fa;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 /* Navbar */
@@ -34,7 +36,7 @@ body {
 /* Container */
 .auth-container {
     min-height: calc(100vh - 200px);
-    padding: 20px 0;
+    padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,6 +46,8 @@ body {
 html,
 body {
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 /* Auth Cards */
@@ -51,7 +55,7 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     border: none;
     border-radius: 12px;
-    margin-top: 20px;
+    margin-top: 0;
     width: 100%;
     max-width: 500px;
     animation: slideIn 0.4s ease;
@@ -85,17 +89,17 @@ body {
     background-color: #ffffff;
 }
 
-.auth-card{
+.auth-card {
     border: none;
     border-radius: 15px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-.auth-card:hover{
+.auth-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .auth-card .card-body {
@@ -428,13 +432,13 @@ small {
     animation: slideIn 0.3s ease;
 }
 
-.row mt-5{
+.row mt-5 {
     justify-content: center;
-    padding: 20px 20px 20px ;
+    padding: 20px 20px 20px;
     margin-left: 100px;
 }
 
-.row mt-5 mb-5{
+.row mt-5 mb-5 {
     padding-left: 100px;
     margin: 100px;
 }

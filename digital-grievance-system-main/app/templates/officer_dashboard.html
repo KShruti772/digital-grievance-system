@@ -198,6 +198,9 @@
                         <th>Priority</th>
                         <th>Est. Days</th>
                         <th>Assigned Officer</th>
+                        <th>Assigned Worker</th>
+                        <th>Worker Contact</th>
+                        <th>Deadline</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -257,17 +260,24 @@
                         <td><span
                                 class="badge bg-{% if complaint.priority == 'High' %}danger{% elif complaint.priority == 'Medium' %}warning{% else %}success{% endif %}">{{
                                 complaint.priority }}</span></td>
-                        <td>                            {% if complaint.estimated_resolution_days %}
-                                {{ complaint.estimated_resolution_days }}
+                        <td>
+                            {% if complaint.estimated_resolution_days %}
+                            {{ complaint.estimated_resolution_days }} days
                             {% else %}
-                                <em class="text-muted">N/A</em>
+                            <em>N/A</em>
                             {% endif %}
                         </td>
-                        <td>                            {% if complaint_officers.get(complaint.id) %}
+                        <td>
+                            {% if complaint_officers.get(complaint.id) %}
                             <span class="badge bg-info">{{ complaint_officers[complaint.id].name }}</span>
                             {% else %}
                             <em class="text-muted">Not Assigned</em>
                             {% endif %}
+                        </td>
+                        <td>{{ complaint.worker_name or 'Not Assigned' }}</td>
+                        <td>{{ complaint.worker_contact or '-' }}</td>
+                        <td>
+                            <span id="timer{{ complaint.id }}"></span>
                         </td>
                         <td>
                             <span
@@ -518,6 +528,30 @@
         } catch (error) {
             console.error('Error loading analytics:', error);
         }
+    }
+
+    // Countdown timer for deadlines
+    {% for complaint in complaints %}
+    {% if complaint.deadline %}
+    startCountdown('{{ complaint.deadline.isoformat() }}', 'timer{{ complaint.id }}');
+    {% endif %}
+    {% endfor %}
+
+    function startCountdown(deadline, elementId) {
+        var end = new Date(deadline).getTime();
+
+        setInterval(function () {
+            var now = new Date().getTime();
+            var distance = end - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+            if (distance < 0) {
+                document.getElementById(elementId).innerHTML = "⚠ Escalated";
+            } else {
+                document.getElementById(elementId).innerHTML =
+                    "⏳ " + days + " days left";
+            }
+        }, 1000);
     }
 </script>
 {% endblock %}

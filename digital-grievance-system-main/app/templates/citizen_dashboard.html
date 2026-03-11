@@ -57,10 +57,10 @@
                         <th>Category</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Estimated Days</th>
                         <th>Worker</th>
                         <th>Contact</th>
                         <th>Resolution Time</th>
+                        <th>Est. Days</th>
                         <th>Date Submitted</th>
                     </tr>
                 </thead>
@@ -82,13 +82,6 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if complaint.estimated_resolution_days %}
-                            {{ complaint.estimated_resolution_days }} days
-                            {% else %}
-                            <em>N/A</em>
-                            {% endif %}
-                        </td>
-                        <td>
                             {% if complaint.worker_name %}
                             {{ complaint.worker_name }}
                             {% else %}
@@ -107,6 +100,13 @@
                             {{ complaint.estimated_resolution_time }}
                             {% else %}
                             <em>Not Set</em>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if complaint.estimated_resolution_days %}
+                            {{ complaint.estimated_resolution_days }} days
+                            {% else %}
+                            <em>N/A</em>
                             {% endif %}
                         </td>
                         <td>{{ complaint.created_at.strftime('%Y-%m-%d') }}</td>
