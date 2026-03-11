@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from models import db, Complaint, Assignment, User
+from models import db, Complaint, Assignment, User, Officer
 from sqlalchemy import func
 from datetime import datetime
 import json
@@ -33,10 +33,18 @@ def dashboard():
     # Check for escalations
     check_escalations()
     
+    # Get the logged-in officer's department from User table
+    current_user = User.query.get(session['user_id'])
+    officer_department = current_user.department if current_user else None
+    
     category = request.args.get('category')
     status = request.args.get('status')
     
     query = Complaint.query
+    
+    # Filter by officer's department
+    if officer_department:
+        query = query.filter_by(category=officer_department)
     
     if category and category != '':
         query = query.filter_by(category=category)
@@ -87,7 +95,8 @@ def dashboard():
                          statuses=statuses,
                          complaint_citizens=complaint_citizens,
                          complaint_workers=complaint_workers,
-                         complaint_officers=complaint_officers)
+                         complaint_officers=complaint_officers,
+                         officer_department=officer_department)
 
 @officer.route('/assign/<int:complaint_id>', methods=['POST'])
 def assign(complaint_id):

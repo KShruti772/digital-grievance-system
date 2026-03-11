@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 from flask_sqlalchemy import SQLAlchemy
-from models import db, ValidOfficer, User, Worker, Officer, create_default_workers
+from models import db, ValidOfficer, User, Worker, Officer, create_default_workers, Admin
 
 app = Flask(__name__, 
             template_folder='../app/templates', 
@@ -135,6 +135,23 @@ if __name__ == '__main__':
                 db.session.commit()
                 print("Default admin created successfully")
         create_default_admin()
+        # debug existing admin users
+        print("==== ADMIN USERS IN DATABASE ====")
+        for a in Admin.query.all():
+            print(f"Admin table: id={a.id}, username={a.username}, email={a.email}")
+        for u in User.query.filter_by(role='admin').all():
+            print(f"User table admin: id={u.id}, name={u.name}, email={u.email}")
+
+        # Create default admin in Admin table only if none exist
+        if Admin.query.count() == 0:
+            admin = Admin(
+                username="admin",
+                email="admin@gmail.com",
+                password="admin123"
+            )
+            db.session.add(admin)
+            db.session.commit()
+            print("Default admin in Admin table created successfully")
         print("\n" + "="*60)
         print("Digital Grievance Redressal System Started!")
         print("="*60)

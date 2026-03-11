@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
-from models import db, Citizen, Officer, ValidOfficer, User
+from models import db, Citizen, Officer, ValidOfficer, User, Feedback
 import os
 from functools import wraps
 
@@ -384,7 +384,41 @@ def logout():
 @auth_routes.route('/')
 @auth_routes.route('/home')
 def home():
+    # redirect authenticated users to their respective dashboards
+    role = session.get('role')
+    if role == 'citizen':
+        return redirect(url_for('citizen.dashboard'))
+    elif role == 'officer':
+        return redirect(url_for('officer.dashboard'))
+    elif role == 'worker':
+        return redirect(url_for('worker.dashboard'))
+    elif role == 'admin':
+        return redirect(url_for('admin.dashboard'))
+    # public homepage
     return render_template('home.html')
+
+@auth_routes.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+
+        new_feedback = Feedback(
+            name=name,
+            email=email,
+            message=message
+        )
+        db.session.add(new_feedback)
+        db.session.commit()
+        flash('Thank you for your feedback!', 'success')
+        return redirect(url_for('auth.home'))
+
+    return render_template('feedback.html')
+
+@auth_routes.route('/admin_login')
+def admin_login_redirect():
+    return redirect(url_for('admin.admin_login'))
 
 # ==================== BACKWARD COMPATIBILITY ROUTES ====================
 # These routes redirect old links to the new authentication system

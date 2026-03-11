@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from models import db, User, Complaint
+from models import db, Admin, User, Complaint, Officer
 from functools import wraps
 from werkzeug.security import check_password_hash
 from datetime import datetime
@@ -21,15 +21,37 @@ def admin_login():
         email = request.form['email']
         password = request.form['password']
 
-        admin = User.query.filter_by(email=email, role='admin').first()
+        # debug existing admin attempt
+        print(f"[ADMIN LOGIN DEBUG] attempt with {email}")
 
-        if admin and check_password_hash(admin.password, password):
-            session['user_id'] = admin.id
-            session['role'] = 'admin'
-            flash('Admin login successful!', 'success')
-            return redirect(url_for('admin.dashboard'))
-        else:
-            flash('Invalid admin credentials', 'danger')
+        # first try dedicated Admin table
+        admin = Admin.query.filter_by(email=email).first()
+        if admin:
+            print(f"[ADMIN LOGIN DEBUG] found in Admin table id={admin.id}")
+            if admin.password == password:
+                session['user_id'] = admin.id
+                session['role'] = 'admin'
+                flash('Admin login successful!', 'success')
+                return redirect(url_for('admin.dashboard'))
+            else:
+                flash('Incorrect password for admin account', 'danger')
+                return render_template('admin_login.html')
+
+        # next fallback to User table record with role=admin (legacy)
+        user_admin = User.query.filter_by(email=email, role='admin').first()
+        if user_admin:
+            print(f"[ADMIN LOGIN DEBUG] found in User table id={user_admin.id}")
+            # assuming password hashed for User table
+            if check_password_hash(user_admin.password, password):
+                session['user_id'] = user_admin.id
+                session['role'] = 'admin'
+                flash('Admin login successful!', 'success')
+                return redirect(url_for('admin.dashboard'))
+            else:
+                flash('Incorrect password for admin account', 'danger')
+                return render_template('admin_login.html')
+
+        flash('Admin email not found', 'danger')
 
     return render_template('admin_login.html')
 
@@ -64,7 +86,12 @@ def dashboard():
 
     # Get all complaints with officer assignments
     complaints = Complaint.query.order_by(Complaint.escalation_level.desc(), Complaint.created_at.desc()).all()
-    officers = User.query.filter_by(role='officer').all()
+    
+    # Get registered officers from dedicated Officer table
+    registered_officers = Officer.query.all()
+    
+    # Use registered officers for display
+    officers = registered_officers
 
     # Get officer assignments
     officer_assignments = {}
@@ -80,6 +107,7 @@ def dashboard():
                          escalated_complaints=escalated_complaints,
                          complaints=complaints,
                          officers=officers,
+                         registered_officers=registered_officers,
                          officer_assignments=officer_assignments,
                          total=total_complaints,
                          resolved=resolved_complaints,

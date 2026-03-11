@@ -83,6 +83,22 @@ class Worker(db.Model):
     department = db.Column(db.String(100), nullable=False)
     contact_number = db.Column(db.String(10), nullable=False)
 
+class Admin(db.Model):
+    __tablename__ = "admin"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True)
+    email = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String(100))
+
+class Feedback(db.Model):
+    __tablename__ = "feedback"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(120))
+    message = db.Column(db.Text)
+
 def create_default_workers():
     workers = [
         {"worker_id":"W101","name":"Ramesh Kumar","department":"Sanitation","contact":"9876543210"},
