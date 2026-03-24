@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<style>
+    /* Ensure card doesn't hide content */
+    .card .card-body {
+        overflow: visible !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0"><i class="bi bi-file-earmark-plus"></i> Submit Complaint</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Complaint Title</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                            placeholder="Brief title of your complaint" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4"
+                            placeholder="Detailed description of the issue" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Roads">Roads</option>
+                            <option value="Garbage">Garbage</option>
+                            <option value="Water">Water</option>
+                            <option value="Electricity">Electricity</option>
+                            <option value="Streetlights">Streetlights</option>
+                            <option value="Drainage">Drainage</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Complaint Location</label>
+                        <a href="https://www.google.com/maps" target="_blank" class="btn btn-secondary mb-2">
+                            <i class="bi bi-geo-alt"></i> Open Google Maps
+                        </a>
+                        <p style="margin-top: 8px; font-size: 0.9rem;">
+                            1. Click the button to open Google Maps. <br>
+                            2. Search or select the location of the complaint. <br>
+                            3. Click "Share" on Google Maps. <br>
+                            4. Copy the location link and paste it below.
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location_link" class="form-label">Paste Google Maps Location Link</label>
+                        <input type="text" class="form-control" id="location_link" name="location_link"
+                            placeholder="Paste Google Maps location link here (e.g., https://maps.google.com/?...)"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image (Optional)</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <small class="text-muted">Supported formats: PNG, JPG, JPEG, GIF</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Submit Complaint</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

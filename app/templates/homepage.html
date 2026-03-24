@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Grievance Redressal System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/modern_style.css">
+</head>
+
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+        <div class="container-fluid px-4">
+            <!-- Brand/Logo -->
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-file-invoice-dollar me-2"></i>
+                Digital Grievance Redressal System
+            </a>
+
+            <!-- Hamburger Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/citizen_login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/citizen_register">
+                            <i class="fas fa-user-plus me-1"></i> Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero-section py-5" id="home">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="hero-title mb-4">
+                        Empowering Citizens Through Transparent Grievance Resolution
+                    </h1>
+                    <p class="hero-description mb-5">
+                        The Digital Grievance Redressal System allows citizens to report civic issues such as damaged
+                        roads, water supply problems, electricity issues, sanitation problems, and more. The system
+                        enables authorities to manage complaints efficiently and ensures transparency in resolving
+                        public grievances.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="/citizen_register" class="btn btn-primary btn-lg">
+                            <i class="fas fa-pencil-alt me-2"></i> Submit Complaint
+                        </a>
+                        <a href="/citizen_login" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BENEFITS SECTION ==================== -->
+    <section class="benefits-section py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">
+                <i class="fas fa-star me-2"></i> Benefits of the System
+            </h2>
+
+            <div class="row g-4">
+                <!-- Benefit 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card h-100">
+                        <div class="benefit-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h5 class="benefit-title">Easy Complaint Submission</h5>
+                        <p class="benefit-text">
+                            Citizens can easily report issues through an online complaint form without any hassle or
+                            complex procedures.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Benefit 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card h-100">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5 class="benefit-title">Real-Time Status Tracking</h5>
+                        <p class="benefit-text">
+                            Users can track the progress of their complaints in real-time and stay updated on every
+                            action.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Benefit 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card h-100">
+                        <div class="benefit-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h5 class="benefit-title">Faster Problem Resolution</h5>
+                        <p class="benefit-text">
+                            Authorities can assign workers and resolve issues quickly through efficient workflow
+                            management.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Benefit 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card h-100">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="benefit-title">Transparent Governance</h5>
+                        <p class="benefit-text">
+                            Ensures accountability and efficient grievance management with complete transparency and
+                            record-keeping.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HOW TO USE SECTION ==================== -->
+    <section class="how-to-use-section py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">
+                <i class="fas fa-question-circle me-2"></i> How to Use the System
+            </h2>
+
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="steps-container">
+                        <!-- Step 1 -->
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h5 class="step-title">
+                                    <i class="fas fa-user-plus me-2"></i> Register an Account
+                                </h5>
+                                <p class="step-text">
+                                    Create a free account by providing your basic details and email address.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h5 class="step-title">
+                                    <i class="fas fa-sign-in-alt me-2"></i> Login to the System
+                                </h5>
+                                <p class="step-text">
+                                    Log in with your credentials to access the complaint submission dashboard.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h5 class="step-title">
+                                    <i class="fas fa-pencil-alt me-2"></i> Submit a Complaint
+                                </h5>
+                                <p class="step-text">
+                                    Fill out the complaint form with details, location, category, and attach photos if
+                                    needed.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="step-item">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h5 class="step-title">
+                                    <i class="fas fa-tasks me-2"></i> Authorities Review & Assign
+                                </h5>
+                                <p class="step-text">
+                                    Authorities review your complaint and assign field workers to resolve the issue.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="step-item">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h5 class="step-title">
+                                    <i class="fas fa-check-circle me-2"></i> Issue Resolved
+                                </h5>
+                                <p class="step-text">
+                                    Once resolved, you'll receive a notification and can view the completion details.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section class="about-section py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="about-image">
+                        <i class="fas fa-building"></i>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <h2 class="section-title mb-4">
+                        <i class="fas fa-info-circle me-2"></i> About the Project
+                    </h2>
+                    <p class="about-text mb-3">
+                        The Digital Grievance Redressal System is designed to improve communication between citizens and
+                        government authorities by providing a digital platform to report and resolve civic issues
+                        efficiently.
+                    </p>
+                    <p class="about-text mb-4">
+                        This innovative system bridges the gap between citizens and government departments, ensuring
+                        that every civic complaint is tracked, managed, and resolved with complete transparency and
+                        accountability.
+                    </p>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>24/7 Complaint Submission</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Real-time Status Updates</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Complete Transparency</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Efficient Resource Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CTA SECTION ==================== -->
+    <section class="cta-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title text-white mb-4">
+                        Ready to Make a Difference?
+                    </h2>
+                    <p class="cta-text mb-4">
+                        Start reporting civic issues today and help improve your community.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="/citizen_register" class="btn btn-light btn-lg">
+                            <i class="fas fa-pencil-alt me-2"></i> Submit Complaint
+                        </a>
+                        <a href="/citizen_login" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">
+                        <i class="fas fa-file-invoice-dollar me-2"></i> Digital Grievance System
+                    </h5>
+                    <p class="footer-text">
+                        Empowering citizens through transparent grievance resolution.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/citizen_login">Login</a></li>
+                        <li><a href="/citizen_register">Register</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="footer-title">Contact Us</h5>
+                    <p class="footer-text">
+                        Email: support@dgrs.gov.in<br>
+                        Phone: 1800-GRIEVANCE<br>
+                        Address: Government Portal, New Delhi
+                    </p>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="footer-copy">
+                        &copy; 2026 Digital Grievance Redressal System. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

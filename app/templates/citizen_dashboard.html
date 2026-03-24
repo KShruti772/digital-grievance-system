@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Citizen Dashboard</h2>
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-plus-circle display-4 text-primary mb-3"></i>
+                <h5 class="card-title">New Complaint</h5>
+                <a href="/citizen/submit" class="btn btn-primary">Submit</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-list-ul display-4 text-info mb-3"></i>
+                <h5 class="card-title">Total Complaints</h5>
+                <p class="display-6 text-info">{{ complaints|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-check-circle display-4 text-success mb-3"></i>
+                <h5 class="card-title">Resolved</h5>
+                <p class="display-6 text-success">{{ complaints|selectattr('status', 'equalto', 'Resolved')|list|length
+                    }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-hourglass display-4 text-warning mb-3"></i>
+                <h5 class="card-title">Pending</h5>
+                <p class="display-6 text-warning">{{ complaints|selectattr('status', 'equalto', 'Pending')|list|length
+                    }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>My Complaints</h3>
+    </div>
+    <div class="card-body">
+        {% if complaints %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Worker</th>
+                        <th>Contact</th>
+                        <th>Resolution Time</th>
+                        <th>Est. Days</th>
+                        <th>Date Submitted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.title }}</td>
+                        <td>{{ complaint.category }}</td>
+                        <td><span
+                                class="badge bg-{% if complaint.priority == 'High' %}danger{% elif complaint.priority == 'Medium' %}warning{% else %}success{% endif %}">{{
+                                complaint.priority }}</span></td>
+                        <td><span
+                                class="badge bg-{% if complaint.status == 'Pending' %}warning{% elif complaint.status == 'Assigned' %}info{% elif complaint.status == 'In Progress' %}primary{% else %}success{% endif %}">{{
+                                complaint.status }}</span>
+                            {% if complaint.escalation_level == 1 %}
+                            <br><span class="badge bg-warning mt-1">Escalated</span>
+                            {% elif complaint.escalation_level == 2 %}
+                            <br><span class="badge bg-danger mt-1">High Priority</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if complaint.worker_name %}
+                            {{ complaint.worker_name }}
+                            {% else %}
+                            <em>Not Assigned</em>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if complaint.worker_contact %}
+                            {{ complaint.worker_contact }}
+                            {% else %}
+                            <em>N/A</em>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if complaint.estimated_resolution_time %}
+                            {{ complaint.estimated_resolution_time }}
+                            {% else %}
+                            <em>Not Set</em>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if complaint.estimated_resolution_days %}
+                            {{ complaint.estimated_resolution_days }} days
+                            {% else %}
+                            <em>N/A</em>
+                            {% endif %}
+                        </td>
+                        <td>{{ complaint.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No complaints yet. <a href="/citizen/submit">Submit one now</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

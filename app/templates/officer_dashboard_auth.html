@@ -1,0 +1,59 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Officer Dashboard - Digital Grievance Redressal System{% endblock %}
+
+{% block content %}
+<div class="mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Welcome, Officer {{ session.officer_id }}!</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Officer ID: <strong>{{ session.officer_id }}</strong>
+                    </div>
+
+                    <div class="alert alert-success" role="alert">
+                        <i class="bi bi-check-circle"></i> Your account has been approved and is active.
+                    </div>
+
+                    <h5>Quick Actions:</h5>
+                    <div class="row mt-3">
+                        <div class="col-md-6 mb-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-list-ul display-4 text-success mb-3"></i>
+                                    <h5 class="card-title">View All Complaints</h5>
+                                    <p class="card-text">View and manage citizen complaints</p>
+                                    <a href="/officer/dashboard" class="btn btn-success">View</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-person check display-4 text-info mb-3"></i>
+                                    <h5 class="card-title">Assign Workers</h5>
+                                    <p class="card-text">Assign complaints to field workers</p>
+                                    <a href="/officer/dashboard" class="btn btn-info">Manage</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="alert alert-light">
+                        <strong>Officer Information:</strong><br>
+                        Officer ID: {{ session.officer_id }}<br>
+                        Status: Approved<br>
+                        Member Since: {{ officer.created_at.strftime('%B %d, %Y') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

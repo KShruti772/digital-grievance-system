@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Map Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        .test-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Simple Leaflet Map Test</h1>
+    <div class="test-info">
+        <p>Click on the map below. A marker should appear and coordinates should be logged to console.</p>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="test-info">
+        <strong>Status:</strong> <span id="status">Initializing...</span><br>
+        <strong>Coordinates:</strong> <span id="coords">None</span>
+    </div>
+
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+
+    <script>
+        console.log('Starting simple map test...');
+
+        // Check if Leaflet is loaded
+        if (typeof L === 'undefined') {
+            document.getElementById('status').textContent = 'ERROR: Leaflet not loaded!';
+            console.error('Leaflet not loaded!');
+        } else {
+            console.log('Leaflet loaded successfully');
+
+            // Check if map container exists
+            const mapContainer = document.getElementById('map');
+            if (!mapContainer) {
+                document.getElementById('status').textContent = 'ERROR: Map container not found!';
+                console.error('Map container not found!');
+            } else {
+                console.log('Map container found');
+
+                try {
+                    // Initialize map
+                    var map = L.map('map').setView([20.5937, 78.9629], 5);
+                    console.log('Map object created');
+
+                    // Add tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                    console.log('Tiles added');
+
+                    var marker;
+
+                    // Add click event
+                    map.on('click', function (e) {
+                        console.log('Map clicked at:', e.latlng);
+
+                        var lat = e.latlng.lat;
+                        var lng = e.latlng.lng;
+
+                        // Remove existing marker
+                        if (marker) {
+                            map.removeLayer(marker);
+                        }
+
+                        // Add new marker
+                        marker = L.marker([lat, lng]).addTo(map)
+                            .bindPopup('Selected Location: ' + lat.toFixed(4) + ', ' + lng.toFixed(4))
+                            .openPopup();
+
+                        // Update form fields
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+
+                        // Update display
+                        document.getElementById('coords').textContent = lat.toFixed(6) + ', ' + lng.toFixed(6);
+                        document.getElementById('status').textContent = 'Location selected!';
+
+                        console.log('Marker added and form updated');
+                    });
+
+                    document.getElementById('status').textContent = 'Map ready - click to select location';
+                    console.log('Map initialization complete');
+
+                } catch (error) {
+                    document.getElementById('status').textContent = 'ERROR: ' + error.message;
+                    console.error('Map initialization error:', error);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+</html>
+</content>
+<parameter name="filePath">d:\chakravyuh2\digital-grievance-system-main\map_test.html
