@@ -1,0 +1,44 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Admin Login - Digital Grievance Redressal System{% endblock %}
+
+{% block content %}
+<div class="auth-card-wrapper">
+    <div class="card auth-form-card">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0"><i class="bi bi-shield-lock"></i> Admin Login</h3>
+        </div>
+        <div class="card-body">
+            <!-- Error Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="post">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter admin email"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-danger w-100 mb-3">
+                    <i class="bi bi-box-arrow-in-right"></i> Admin Login
+                </button>
+            </form>
+            <hr>
+            <p class="text-center"><a href="/home">Back to Home</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

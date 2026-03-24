@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Digital Grievance Redressal System{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="container-fluid">
+        <div class="row align-items-center gx-0">
+            <div class="col-lg-8 mx-auto text-center py-5">
+                <h1 class="hero-title mb-4">
+                    <i class="bi bi-megaphone-fill hero-icon"></i><br>
+                    Empowering Citizens Through Transparent Grievance Resolution
+                </h1>
+                <p class="hero-subtitle mb-4">
+                    A digital platform that bridges the gap between citizens and government authorities
+                </p>
+                <p class="hero-description mb-5">
+                    This platform allows citizens to submit civic complaints related to public infrastructure
+                    such as roads, electricity, water supply, sanitation, and street lighting.
+                    The system ensures transparency by allowing users to track the progress of their complaints
+                    until they are resolved by authorities.
+                </p>
+                {% if not session.citizen_id and not session.officer_id and not session.user_id %}
+                <div class="hero-buttons">
+                    <a href="/home" class="btn btn-primary-custom btn-lg me-3 mb-2">
+                        <i class="bi bi-rocket-takeoff"></i> Get Started
+                    </a>
+                    <a href="#about" class="btn btn-outline-primary-custom btn-lg mb-2">
+                        <i class="bi bi-info-circle"></i> Learn More
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFITS SECTION -->
+<section class="benefits-section py-5" id="benefits">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title mb-3">Why Choose Our System?</h2>
+                <p class="section-subtitle">Experience the advantages of modern governance</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Benefit 1 -->
+            <div class="col-md-4">
+                <div class="benefit-card h-100">
+                    <div class="benefit-icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                    <h3 class="benefit-title">Easy Complaint Submission</h3>
+                    <p class="benefit-text">
+                        Citizens can report civic issues quickly using a simple and intuitive online form.
+                        No complex procedures - just describe your issue and submit.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Benefit 2 -->
+            <div class="col-md-4">
+                <div class="benefit-card h-100">
+                    <div class="benefit-icon">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <h3 class="benefit-title">Real-Time Status Tracking</h3>
+                    <p class="benefit-text">
+                        Monitor the progress of your complaints in real time. Get instant updates as
+                        authorities review, assign, and resolve your grievances.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Benefit 3 -->
+            <div class="col-md-4">
+                <div class="benefit-card h-100">
+                    <div class="benefit-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h3 class="benefit-title">Efficient Governance</h3>
+                    <p class="benefit-text">
+                        Authorities can manage and resolve complaints effectively with centralized tracking,
+                        assignment workflows, and performance metrics.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS SECTION -->
+<section class="how-it-works-section py-5 bg-light" id="how-it-works">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title mb-3">How It Works</h2>
+                <p class="section-subtitle">Simple 5-step process for resolving your grievances</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Step 1 -->
+            <div class="col-md-10 mx-auto">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4 class="step-title">
+                            <i class="bi bi-person-plus"></i> Register an Account
+                        </h4>
+                        <p class="step-description">
+                            Create a free account as a citizen, officer, or worker. It takes just a minute
+                            to set up your profile and start using the platform.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="col-md-10 mx-auto">
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4 class="step-title">
+                            <i class="bi bi-box-arrow-in-right"></i> Login to the System
+                        </h4>
+                        <p class="step-description">
+                            Log in with your credentials to access your personalized dashboard where you can
+                            view all your activities and manage your account.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="col-md-10 mx-auto">
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4 class="step-title">
+                            <i class="bi bi-file-earmark-plus"></i> Submit a Complaint
+                        </h4>
+                        <p class="step-description">
+                            Describe your grievance in detail. Include information about the issue, location,
+                            category, and attach relevant photos or documents for better documentation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="col-md-10 mx-auto">
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4 class="step-title">
+                            <i class="bi bi-eye"></i> Track the Progress
+                        </h4>
+                        <p class="step-description">
+                            Watch your complaint move through the system. See updates as it's assigned to
+                            officers and workers, and stays informed about every development.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="col-md-10 mx-auto">
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4 class="step-title">
+                            <i class="bi bi-check-circle"></i> Complaint Resolution
+                        </h4>
+                        <p class="step-description">
+                            Once authorities resolve your issue, your complaint status is updated to "Resolved".
+                            Provide feedback to help us improve the system.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about-section py-5" id="about">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="about-content">
+                    <h2 class="section-title mb-4">About This System</h2>
+                    <p class="about-text mb-3">
+                        This project aims to improve communication between citizens and government departments
+                        by providing a centralized digital platform for grievance reporting and resolution.
+                    </p>
+                    <p class="about-text mb-3">
+                        Our mission is to create a transparent and efficient system where:
+                    </p>
+                    <ul class="about-list">
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Citizens can easily report issues
+                        </li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Government stays accountable</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Problems get resolved faster</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Transparency is maintained</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Citizens can track progress</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-image">
+                    <div class="about-illustration">
+                        <i class="bi bi-building"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES SECTION -->
+<section class="categories-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title mb-3">Complaint Categories</h2>
+                <p class="section-subtitle">We handle a wide range of civic issues</p>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4 col-lg-2">
+                <div class="category-badge">
+                    <i class="bi bi-building-gear"></i>
+                    <p>Roads</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="category-badge">
+                    <i class="bi bi-lightning"></i>
+                    <p>Electricity</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="category-badge">
+                    <i class="bi bi-droplet"></i>
+                    <p>Water Supply</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="category-badge">
+                    <i class="bi bi-trash"></i>
+                    <p>Sanitation</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="category-badge">
+                    <i class="bi bi-lamp"></i>
+                    <p>Street Lighting</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="category-badge">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <p>Other</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title mb-4">Ready to Make a Difference?</h2>
+                <p class="section-subtitle mb-4">
+                    Join thousands of citizens using our platform to improve their communities
+                </p>
+                {% if not session.citizen_id and not session.officer_id and not session.user_id %}
+                <div class="cta-buttons">
+                    <a href="/home" class="btn btn-primary-custom btn-lg me-3 mb-2">
+                        <i class="bi bi-arrow-right"></i> Start Now
+                    </a>
+                    <a href="#about" class="btn btn-outline-primary-custom btn-lg mb-2">
+                        <i class="bi bi-question-circle"></i> More Info
+                    </a>
+                </div>
+                {% else %}
+                <p class="lead text-muted">Welcome! Use the menu above to navigate to your dashboard.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-section bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h5><i class="bi bi-file-earmark-check"></i> Digital Grievance System</h5>
+                <p class="text-muted">Making governance transparent and citizen-centric.</p>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#how-it-works" class="text-muted text-decoration-none">How It Works</a></li>
+                    <li><a href="#benefits" class="text-muted text-decoration-none">Benefits</a></li>
+                    <li><a href="#about" class="text-muted text-decoration-none">About</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <p class="text-muted">
+                    <i class="bi bi-telephone"></i> +91 XXXX-XXXX<br>
+                    <i class="bi bi-envelope"></i> support@grievance-system.gov
+                </p>
+            </div>
+        </div>
+        <hr class="bg-secondary">
+        <div class="row text-center">
+            <div class="col-12">
+                <p class="text-muted mb-0">
+                    &copy; 2026 Digital Grievance Redressal System. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
